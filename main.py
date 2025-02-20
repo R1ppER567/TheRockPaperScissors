@@ -52,7 +52,7 @@ def is_win(user: int, computer: int, total_options: int) -> bool:
         bool: True if the user wins, False otherwise.
     """
     return (
-        (user - computer) % total_options == 
+        (computer - user) % total_options == 
         (total_options - 1) % total_options
     )
 
