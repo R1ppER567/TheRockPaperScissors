@@ -5,7 +5,7 @@ from typing import Final
 import msg_consts
 
 
-OPTIONS: Final = ("rock", "paper", "scissors")
+OPTIONS: Final = {1: "rock", 2: "paper", 3: "scissors"}
 YES_INPUT: Final = frozenset({"yes", "y", "1"})
 NO_INPUT: Final = frozenset({"no", "n", "0"})
 
@@ -22,16 +22,18 @@ def get_user_option() -> int:
         int: The user's option.
     """
     while True:
-        user_option = input(msg_consts.INPUT_MSG).strip()
+        user_option = input(msg_consts.INPUT_MSG.format(*OPTIONS)).strip()
 
         if user_option.isdigit():
             user_option = int(user_option)
         else:
             clear()
-            print(msg_consts.INVALID_TYPE_MSG)
+            print(msg_consts.INVALID_TYPE_MSG.format(
+                OPTIONS.keys[0], OPTIONS.keys[-1]  # range of acceptable values
+            ))
             continue
 
-        if user_option in range(len(OPTIONS)):
+        if user_option in OPTIONS:
             return user_option
         clear()
         print(msg_consts.INVALID_RANGE_MSG)
@@ -63,7 +65,7 @@ def play_game() -> None:
     The computer randomly selects an option and the user selects an option.
     The result is then displayed.
     """
-    computer_option = random.randrange(len(OPTIONS))
+    computer_option = random.choice(sorted(OPTIONS.keys()))
     user_option = get_user_option()
 
     print(msg_consts.INFO_MSG.format(
